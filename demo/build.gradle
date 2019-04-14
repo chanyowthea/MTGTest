@@ -1,12 +1,12 @@
-apply plugin: 'com.android.application'
-//apply plugin: 'com.android.library'
+//apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 26
     buildToolsVersion '26.0.0'
     defaultConfig {
         useLibrary 'org.apache.http.legacy'
-        applicationId "com.mintegral.sdk.demo"
+//        applicationId "com.mintegral.sdk.demo"
         minSdkVersion 17
         targetSdkVersion 26
         versionCode 1
@@ -19,7 +19,7 @@ android {
     }
     buildTypes {
         debug {
-            testCoverageEnabled = true
+//            testCoverageEnabled = true
         }
         release {
             minifyEnabled false
@@ -42,7 +42,6 @@ repositories{
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-
     compile(name: 'mintegral_alphab', ext: 'aar')
     compile(name: 'mintegral_appwall', ext: 'aar')
     compile(name: 'mintegral_appwallext', ext: 'aar')
@@ -63,13 +62,11 @@ dependencies {
     //noinspection GradleCompatible
     compile 'com.android.support:support-v4:26.0.0'
     compile 'com.facebook.android:audience-network-sdk:4.26.0'
-    compile ('com.google.android.gms:play-services-ads:10.0.1'){
+    compile('com.google.android.gms:play-services-ads:10.0.1') {
         exclude group: 'com.android.support', module: 'support-v4'
     }
-
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
-   releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
-   // this way you only enable BlockCanary in debug package
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+    // this way you only enable BlockCanary in debug package
     debugCompile 'com.github.markzhai:blockcanary-android:1.5.0'
-
 }

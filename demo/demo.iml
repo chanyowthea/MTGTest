@@ -19,6 +19,7 @@
         <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
         <option name="RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/src/main/res" />
         <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/src/main/assets" />
+        <option name="PROJECT_TYPE" value="1" />
       </configuration>
     </facet>
   </component>
@@ -97,7 +98,6 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/reload-dex" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/res" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/restart-dex" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/rs" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/shaders" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/split-apk" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/symbols" />
@@ -124,13 +124,13 @@
     <orderEntry type="library" exported="" name="Gradle: com.android.support:support-fragment-26.0.0" level="project" />
     <orderEntry type="library" exported="" name="Gradle: com.google.android.gms:play-services-ads-10.0.1" level="project" />
     <orderEntry type="library" exported="" name="Gradle: com.google.android.gms:play-services-base-10.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:C.\Data\GameDesign\UnityProjects\MTGTest\demo\libs\classes.jar:unspecified@jar" level="project" />
     <orderEntry type="library" exported="" name="Gradle: com.android.support:support-media-compat-26.0.0" level="project" />
     <orderEntry type="library" exported="" name="Gradle: com.google.android.gms:play-services-ads-lite-10.0.1" level="project" />
     <orderEntry type="library" exported="" name="Gradle: mintegral_interstitialvideo:@aar" level="project" />
     <orderEntry type="library" exported="" name="Gradle: mintegral_reward:@aar" level="project" />
     <orderEntry type="library" exported="" name="Gradle: com.android.support:support-compat-26.0.0" level="project" />
     <orderEntry type="library" exported="" name="Gradle: com.android.support:support-v4-26.0.0" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: __local_jars__:C.\Data\GameDesign\ASProjects\mintegral_china_android_sdk_20190325063036\MTGTest\demo\libs\myTarget.jar:unspecified@jar" level="project" />
     <orderEntry type="library" exported="" name="Gradle: com.google.android.gms:play-services-clearcut-10.0.1" level="project" />
     <orderEntry type="library" exported="" name="Gradle: com.github.markzhai:blockcanary-android-1.5.0" level="project" />
     <orderEntry type="library" exported="" name="Gradle: mintegral_videojs:@aar" level="project" />
@@ -151,6 +151,7 @@
     <orderEntry type="library" exported="" name="Gradle: mintegral_interstitial:@aar" level="project" />
     <orderEntry type="library" exported="" name="Gradle: mintegral_nativeex:@aar" level="project" />
     <orderEntry type="library" exported="" name="Gradle: com.android.support:support-vector-drawable-25.3.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:C.\Data\GameDesign\UnityProjects\MTGTest\demo\libs\myTarget.jar:unspecified@jar" level="project" />
     <orderEntry type="library" exported="" name="Gradle: org.apache.http.legacy-android-26" level="project" />
   </component>
 </module>

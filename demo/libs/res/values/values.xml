@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="http://schemas.android.com/tools">
+    <color name="mintegral_reward_kiloo_background">#b3000000</color>
+    <style name="mintegral_reward_theme" parent="@android:style/Theme.NoTitleBar.Fullscreen"/>
+    <style name="mintegral_transparent_theme" parent="mintegral_reward_theme">
+            <item name="android:windowIsTranslucent">true</item>
+            <item name="android:windowContentOverlay">@null</item>
+            <item name="android:windowTranslucentStatus" ns1:targetApi="kitkat">true</item>
+            <item name="android:windowFullscreen">true</item>
+            <item name="android:statusBarColor" ns1:targetApi="lollipop">@color/mintegral_reward_kiloo_background</item>
+            <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+            <item name="android:backgroundDimEnabled">false</item>
+            <item name="android:windowBackground">@color/mintegral_reward_kiloo_background</item>
+            <item name="android:windowNoTitle">true</item>
+            <item name="android:windowActionBar" ns1:targetApi="honeycomb">false</item>
+        </style>
+</resources>

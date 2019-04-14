@@ -1,73 +1,93 @@
 package com.mintegral.sdk.demo;
 
-import android.app.Dialog;
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.net.ConnectivityManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.FragmentActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.mintegral.msdk.MIntegralConstans;
+import com.mintegral.msdk.MIntegralSDK;
+import com.mintegral.msdk.MIntegralUser;
+import com.mintegral.msdk.out.MIntegralSDKFactory;
 import com.mintegral.msdk.out.MTGRewardVideoHandler;
 import com.mintegral.msdk.out.RewardVideoListener;
 import com.mintegral.msdk.videocommon.download.NetStateOnReceive;
-//import com.mintegral.sdk.demo.view.CommonTitleLayout;
+import com.mintegral.sdk.demo.util.SystemBarTintManager;
+import com.unity3d.player.UnityPlayer;
+import com.unity3d.player.UnityPlayerActivity;
 
-public class RewardActivity extends BaseActivity implements OnClickListener {
+import java.util.Map;
+
+public class RewardActivity extends UnityPlayerActivity {
 	private final static String TAG = "RewardActivity";
-	private Button bt_load;
-	private Button bt_show;
-	private Button bt_mute;
-	private Button bt_unmute;
-//	private CommonTitleLayout mTitleLayout;
 	private MTGRewardVideoHandler mMTGRewardVideoHandler;
-	private ProgressBar mProgressBar;
 	private NetStateOnReceive mNetStateOnReceive;
-	private Dialog mDialog;
 	private String mRewardUnitId = "21310";
 	private String mRewardId = "12817";
 	private String mUserId = "123";
 
-	@Override
-	public int getResLayoutId() {
-		return R.layout.mintegral_demo_atv_reward;
-	}
+    @SuppressLint("ResourceAsColor")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initWindow();
+        onCreate();
+        initData();
 
-	@Override
-	public void initView() {
-		bt_load = (Button) findViewById(R.id.bt_load);
-		bt_show = (Button) findViewById(R.id.bt_show);
-		bt_mute = (Button) findViewById(R.id.bt_mute);
-		bt_unmute = (Button) findViewById(R.id.bt_unmute);
-		mProgressBar = (ProgressBar) findViewById(R.id.mintegral_demo_progress);
-//		mTitleLayout = (CommonTitleLayout) findViewById(R.id.mintegral_demo_common_title_layout);
-	}
+//		new Handler().postDelayed(new Runnable() {
+//			@Override
+//			public void run() {
+//        		Start();
+//			}
+//		},5);
 
-	@Override
+    }
+
+    private void initWindow() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            setTranslucentStatus(true);
+        }
+        SystemBarTintManager tintManager = new SystemBarTintManager(this);
+        tintManager.setStatusBarTintColor(0x2ba4c2 // getResources().getColor(R.color.mintegral_demo_blue)
+        );
+        tintManager.setStatusBarTintEnabled(true);
+    }
+
+    @TargetApi(19)
+    private void setTranslucentStatus(boolean on) {
+        Window win = getWindow();
+        WindowManager.LayoutParams winParams = win.getAttributes();
+        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+        if (on) {
+            winParams.flags |= bits;
+        } else {
+            winParams.flags &= ~bits;
+        }
+        win.setAttributes(winParams);
+    }
+
 	public void initData() {
+	    onCreate();
 		initHandler();
 
+		mMTGRewardVideoHandler.load();
 	}
 
-	@Override
-	public void setListener() {
-//		mTitleLayout.setTitleText("RewardVideo");
-		bt_load.setOnClickListener(this);
-		bt_show.setOnClickListener(this);
-		bt_mute.setOnClickListener(this);
-		bt_unmute.setOnClickListener(this);
-	}
-
-	private void showLoadding() {
-		mProgressBar.setVisibility(View.VISIBLE);
-	}
-
-	private void hideLoadding() {
-		mProgressBar.setVisibility(View.GONE);
+	public void Start()
+	{
+        if (mMTGRewardVideoHandler.isReady()) {
+            mMTGRewardVideoHandler.show(mRewardId, mUserId);
+        }
 	}
 
 	private void initHandler() {
@@ -93,15 +113,14 @@ public class RewardActivity extends BaseActivity implements OnClickListener {
 				@Override
 				public void onVideoLoadSuccess(String unitId) {
 					Log.e(TAG, "onVideoLoadSuccess:"+Thread.currentThread());
-					hideLoadding();
 					Toast.makeText(getApplicationContext(), "onVideoLoadSuccess()", Toast.LENGTH_SHORT).show();
 
+//	        		Start();
 				}
 
 				@Override
 				public void onVideoLoadFail(String errorMsg) {
 					Log.e(TAG, "onVideoLoadFail errorMsg:"+errorMsg);
-					hideLoadding();
 					Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_SHORT).show();
 				}
 
@@ -122,7 +141,7 @@ public class RewardActivity extends BaseActivity implements OnClickListener {
 					Log.e(TAG, "onAdClose rewardinfo :" + "RewardName:" + RewardName + "RewardAmout:" + RewardAmout+" isCompleteView："+isCompleteView);
 					if(isCompleteView){
 						Toast.makeText(getApplicationContext(),"onADClose:"+isCompleteView+",rName:"+RewardName +"，RewardAmout:"+RewardAmout,Toast.LENGTH_SHORT).show();
-						showDialog(RewardName, RewardAmout);
+						UnityPlayer.UnitySendMessage("Canvas", "ReceiveAndroidMessage",RewardName + "," + RewardAmout);
 					}else{
 						Toast.makeText(getApplicationContext(),"onADClose:"+isCompleteView+",rName:"+RewardName +"，RewardAmout:"+RewardAmout,Toast.LENGTH_SHORT).show();
 					}
@@ -153,51 +172,9 @@ public class RewardActivity extends BaseActivity implements OnClickListener {
 	}
 
 	@Override
-	public void onClick(View v) {
-		if (v.getId() == R.id.bt_load)
-		{
-			showLoadding();
-			mMTGRewardVideoHandler.load();
-		}
-		else if(v.getId() == R.id.bt_show)
-		{
-			if (mMTGRewardVideoHandler.isReady()) {
-				mMTGRewardVideoHandler.show(mRewardId, mUserId);
-			}
-		}
-
-//		switch (v.getId()) {
-//			case R.id.bt_load:
-//				showLoadding();
-//				mMTGRewardVideoHandler.load();
-//				break;
-//			case R.id.bt_show:
-//				if (mMTGRewardVideoHandler.isReady()) {
-//					mMTGRewardVideoHandler.show(mRewardId, mUserId);
-//				}
-//				break;
-//			case R.id.bt_mute:
-//				if (mMTGRewardVideoHandler != null) {
-//					Toast.makeText(getApplicationContext(),"bt_mute",Toast.LENGTH_SHORT).show();
-//					mMTGRewardVideoHandler.playVideoMute(MIntegralConstans.REWARD_VIDEO_PLAY_MUTE);
-//				}
-//				break;
-//			case R.id.bt_unmute:
-//				if (mMTGRewardVideoHandler != null) {
-//					Toast.makeText(getApplicationContext(),"bt_unmute",Toast.LENGTH_SHORT).show();
-//					mMTGRewardVideoHandler.playVideoMute(MIntegralConstans.REWARD_VIDEO_PLAY_NOT_MUTE);
-//				}
-//				break;
-//		}
-	}
-
-	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		try {
-			if (mDialog != null) {
-				mDialog = null;
-			}
 			if (mNetStateOnReceive != null) {
 				unregisterReceiver(mNetStateOnReceive);
 			}
@@ -206,23 +183,66 @@ public class RewardActivity extends BaseActivity implements OnClickListener {
 		}
 	}
 
-	public void showDialog(String RewardName, float RewardAmout) {
-		try {
-//			mDialog = new Dialog(RewardActivity.this);
-//			View view = View.inflate(RewardActivity.this, R.layout.dialog_reward, null);
-//			TextView tvRewardName = (TextView) view.findViewById(R.id.tv_rewardName);
-//			TextView tvRewardAmout = (TextView) view.findViewById(R.id.tv_RewardAmout);
-//			tvRewardName.setText(RewardName + "");
-//			tvRewardAmout.setText(RewardAmout + "");
-//			mDialog.setContentView(view);
-//			mDialog.show();
-		}catch (Throwable t){
-			t.printStackTrace();
-		}
-	}
+	// move from MainActivity
+    public void onCreate() {
 
+//		if (LeakCanary.isInAnalyzerProcess(this)) {
+//			// This process is dedicated to LeakCanary for heap analysis.
+//			// You should not init your app in this process.
+//			return;
+//		}
 
+        MIntegralConstans.DEBUG = true;
 
+//		LeakCanary.install(this);
+//		//检查ANR工具
+//		BlockCanary.install(this, new BlockCanaryContext()).start();
 
+        Log.i("demo", "application oncreate");
 
+        reportUser(33.0121,22.001);
+        MIntegralConstans.DEBUG = true;
+
+        // init sdk
+        final MIntegralSDK sdk = MIntegralSDKFactory.getMIntegralSDK();
+        // test appId and appKey
+        String appId = "92762";
+        String appKey = "936dcbdd57fe235fd7cf61c2e93da3c4";
+        Map<String, String> map = sdk.getMTGConfigurationMap(appId, appKey);
+        // if you modify applicationId, please add the following attributes,
+        // otherwise it will crash
+        // map.put(MIntegralConstans.PACKAGE_NAME_MANIFEST, "your AndroidManifest
+        // package value");
+
+        sdk.init(map, this);
+        //update user
+        reportUser(111.0121,-15.001);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        DisplayMetrics dm = this.getBaseContext().getResources().getDisplayMetrics();
+        this.getBaseContext().createConfigurationContext(newConfig);
+    }
+
+    /**
+     * report current user info,this can Raise Revenue
+     */
+    public static void reportUser(double lat , double lng){
+        MIntegralUser mIntegralUser = new MIntegralUser();
+        // 1(pay),0(no pay)，if unkonw you can not set
+        mIntegralUser.setPay(1);
+        // 1male,2fmale(int类型),if unkonw you can not set
+        mIntegralUser.setGender(2);
+        // set current user age,if unkonw you can not set
+        mIntegralUser.setAge(28);
+        //Custom parameters
+        mIntegralUser.setCustom("Custom parameters");
+        //set user longitude,if unkonw you can not set
+        mIntegralUser.setLng(lng);
+        //set user latitude,if unkonw you can not set
+        mIntegralUser.setLat(lat);
+        MIntegralSDKFactory.getMIntegralSDK().reportUser(mIntegralUser);
+    }
 }
