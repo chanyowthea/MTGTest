@@ -1,0 +1,75 @@
+apply plugin: 'com.android.application'
+//apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion '26.0.0'
+    defaultConfig {
+        useLibrary 'org.apache.http.legacy'
+        applicationId "com.mintegral.sdk.demo"
+        minSdkVersion 17
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+//        multiDexEnabled = true
+    }
+    dexOptions {
+        preDexLibraries = false
+        javaMaxHeapSize = "3g"
+    }
+    buildTypes {
+        debug {
+            testCoverageEnabled = true
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+
+}
+
+repositories{
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+
+    compile(name: 'mintegral_alphab', ext: 'aar')
+    compile(name: 'mintegral_appwall', ext: 'aar')
+    compile(name: 'mintegral_appwallext', ext: 'aar')
+    compile(name: 'mintegral_chinacommon', ext: 'aar')
+    compile(name: 'mintegral_interstitial', ext: 'aar')
+    compile(name: 'mintegral_interstitialvideo', ext: 'aar')
+    compile(name: 'mintegral_mtgdownloads', ext: 'aar')
+    compile(name: 'mintegral_mtgjscommon', ext: 'aar')
+    compile(name: 'mintegral_mtgnative', ext: 'aar')
+    compile(name: 'mintegral_nativeex', ext: 'aar')
+    compile(name: 'mintegral_offerwall', ext: 'aar')
+    compile(name: 'mintegral_playercommon', ext: 'aar')
+    compile(name: 'mintegral_reward', ext: 'aar')
+    compile(name: 'mintegral_videocommon', ext: 'aar')
+    compile(name: 'mintegral_videofeeds', ext: 'aar')
+    compile(name: 'mintegral_videojs', ext: 'aar')
+    compile(name: 'mintegral_interactiveads', ext: 'aar')
+    //noinspection GradleCompatible
+    compile 'com.android.support:support-v4:26.0.0'
+    compile 'com.facebook.android:audience-network-sdk:4.26.0'
+    compile ('com.google.android.gms:play-services-ads:10.0.1'){
+        exclude group: 'com.android.support', module: 'support-v4'
+    }
+
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
+   releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+   // this way you only enable BlockCanary in debug package
+    debugCompile 'com.github.markzhai:blockcanary-android:1.5.0'
+
+}

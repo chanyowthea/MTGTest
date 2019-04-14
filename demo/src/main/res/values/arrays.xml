@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+   <string-array name="languages">
+        <item>FB</item>
+        <item>MTG</item>
+        <item>AdMob</item>
+        <item>MyTarget</item>
+    </string-array> 
+</resources>
